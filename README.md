@@ -1,73 +1,72 @@
-# React + TypeScript + Vite
+# 🐱 Kitty Terminal Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive, high-fidelity terminal emulator portfolio website designed exactly to match my custom personal Linux **Kitty Terminal** setup.
 
-Currently, two official plugins are available:
+Built as a client-side frontend project using **React**, **TypeScript**, and **CSS Variables** to create a gamified, quest-driven terminal experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🎨 Visual & Design Specifications
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Wallpaper**: Cosmic starry background with planet overlays and blurred space gradients.
+- **Terminal Frame**: Rounded corners, thin sleek borders, semi-transparent purple-slate terminal body, and backdrop-blur styling.
+- **Typography**: `JetBrains Mono` imported from Google Fonts.
+- **Two-Line Shell Prompt**:
+  - *Line 1*: `╭─ 󰊠 billa at ~` (left-aligned) and a live ticking clock `🕒 HH:MM` (right-aligned).
+  - *Line 2*: `╰─> ` (followed by the typing cursor).
+- **Pokemon Art**: Pixel art of Regirock rendered inside the terminal upon startup or command execution.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Core**: React 18+ (TypeScript)
+- **Tooling**: Vite (Dev Server & Bundler)
+- **Styling**: Pure CSS (Custom variables, CSS Grid/Flexbox, Keyframes for transitions and glitch animations)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/kitty-terminal-portfolio.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd kitty-terminal-portfolio
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Development
+
+To start the development server with Hot Module Replacement (HMR):
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Production Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To compile TypeScript and bundle the assets into the `/dist` folder for hosting:
+```bash
+npm run build
 ```
+
+---
+
+## 🏆 Quest Progress
+
+This project is built step-by-step through a series of learning quests:
+- [x] **Quest 1: The Kitty Window** — Setup, CSS layout models, and environment theme styling.
+- [ ] **Quest 2: Interactive Terminal Shell** — Custom inputs, state hooks, and keyboard event handlers.
+- [ ] **Quest 3: Shell Commands & Logic** — Command routing, conditional styling, and projects layout.
+- [ ] **Quest 4: Contact Form & Polish** — Progressive shell forms, responsive styling, and final adjustments.
