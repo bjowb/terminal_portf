@@ -1,1 +1,35 @@
+.terminal-window {
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
 
+    /* Semi-transparent body matching Kitty */
+    background-color: rgba(27, 27, 36, 0.85);
+
+    /* Glassmorphism blur */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    /* Thin sleek border & rounded corners */
+    border: 1px solid rgba(137, 180, 250, 0.3);
+    /* Sleek lavender-blue border */
+    border-radius: 12px;
+
+    /* Shadow to give depth */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+    /* Layout context for contents */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 24px;
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-y: auto;
+
+    /* Ensure text colors look crisp */
+    color: #cdd6f4;
+}

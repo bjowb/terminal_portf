@@ -3,8 +3,11 @@ import './App.css'
 function App() {
 
     return (
-        <div className='app-container'>
-            <h1>Kitty_Terminal_Portfolio</h1>
+        <div className='terminal-window'>
+            <div className='terminal-body'>
+                {/* add rock spirit or pokemon here*/}
+                <p> Terminal is booting up .....</p>
+            </div>
         </div>
     )
 }
