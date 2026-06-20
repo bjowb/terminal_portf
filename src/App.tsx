@@ -10,6 +10,13 @@ const BOOT_LOGS = [
     "Ready to receive input.",
 ];
 
+const getFormattedTime = () => {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
+
 
 function App() {
 
@@ -22,8 +29,17 @@ function App() {
     const [isBootComplete, setIsBootComplete] = useState(false);
     //pokemonId
     const [pokemonId, setPokemonId] = useState<number | null>(null);
+    //current time
+    const [currentTime, setCurrentTime] = useState(getFormattedTime());
+
 
     //-----------EFFECTS----------
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(getFormattedTime());
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [])
     useEffect(() => {
         let currentIndex = 0;
         const randomId = Math.floor(Math.random() * 386) + 1;
@@ -51,13 +67,20 @@ function App() {
     return (
         <div className='terminal-window'>
             <div className='terminal-body'>
-                {!isBootComplete &&
-                    <p> Terminal is booting up .....</p>}
-
                 {visibleLogs.map((log, index) => (
                     <div key={index} className='log-line'>{log}</div>
                 ))}
                 <div ref={bottomRef} />
+                {isBootComplete && (
+                    <pre className='ascii-banner'>
+{`      _  ___ _   _
+     | |/ (_) |_| |_ _  _
+     | ' <| |  _|  _| || |
+     |_|\\_\\_|\\__|\\__|\\_, |
+                     |__/`}
+                    </pre>
+                )}
+
                 {isBootComplete && (
                     <div className='pokemon-sprite-container'>
                         {/* 
@@ -71,6 +94,19 @@ function App() {
                             alt='random-pokemon'
                             className='pokemon-sprite'
                         />
+                    </div>
+                )}
+
+                {isBootComplete && (
+                    <div className='prompt-container'>
+                        <div className='prompt-line-1'>
+                            <span>╭─ 󰊠 billa at ~</span>
+                            <span>🕒 {currentTime}</span>
+                        </div>
+                        <div className='prompt-line-2'>
+                            <span>╰─&gt; </span>
+                            <span className='cursor'>█</span>
+                        </div>
                     </div>
                 )}
             </div>

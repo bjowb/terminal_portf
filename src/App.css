@@ -1,4 +1,5 @@
 .terminal-window {
+    position: relative;
     width: calc(100% - 32px);
     height: calc(100% - 32px);
 
@@ -26,7 +27,7 @@
 .terminal-body {
     flex: 1;
     padding: 24px;
-    font-size: 16px;
+    font-size: 24px;
     line-height: 1.5;
     overflow-y: auto;
 
@@ -38,8 +39,95 @@
     margin-bottom: 16px;
 }
 
+.ascii-banner {
+    color: #cba6f7;
+    /* Lavender color */
+    font-family: var(--font-mono);
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+    font-weight: bold;
+}
+
 .pokemon-sprite {
     width: 360px;
     height: 360px;
     image-rendering: pixelated;
+}
+
+.prompt-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.prompt-line-1 {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #cba6f7;
+}
+
+.prompt-line-1 span:first-child {
+    color: #89b4fa;
+    /* Lavender-blue for billa at ~ */
+}
+
+.prompt-line-1 span:last-child {
+    color: #a6e3a1;
+    /* Pale green for clock */
+}
+
+.prompt-line-2 {
+    color: #89b4fa;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Retro blinking cursor */
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background-color: #f38ba8;
+    /* Hot pink/coral cursor */
+    animation: blink-cursor 1s step-end infinite;
+}
+
+@keyframes blink-cursor {
+
+    from,
+    to {
+        background-color: transparent
+    }
+
+    50% {
+        background-color: #f38ba8;
+    }
+}
+
+/* CRT monitor effects */
+.terminal-window::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.15) 50%);
+    background-size: 100% 4px;
+    /* Creates 2px-wide scanlines */
+    z-index: 10;
+    pointer-events: none;
+    /* CRITICAL: Allows clicks to pass through to buttons/inputs! */
+    border-radius: 12px;
+    /* Matches the rounded corners of the window */
+}
+
+/* Gives text a soft, natural retro glow */
+.terminal-body {
+    text-shadow: 0 0 2px rgba(201, 203, 255, 0.35), 0 0 6px rgba(137, 180, 250, 0.15);
 }
