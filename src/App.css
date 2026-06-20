@@ -33,3 +33,13 @@
     /* Ensure text colors look crisp */
     color: #cdd6f4;
 }
+
+.pokemon-sprite-container {
+    margin-bottom: 16px;
+}
+
+.pokemon-sprite {
+    width: 360px;
+    height: 360px;
+    image-rendering: pixelated;
+}
