@@ -4,17 +4,48 @@ import BootSequence from './components/BootSequence'
 import WelcomeHeader from './components/WelcomeHeader'
 import ActivePrompt from './components/ActivePrompt'
 
+// Simple syntax highlighter helper for command history display
+const highlightCommand = (cmd: string) => {
+    const tokens = cmd.split(/(\s+)/);
+    let commandFound = false;
+    return tokens.map((token, index) => {
+        if (/^\s+$/.test(token)) return <span key={index}>{token}</span>;
+        if (!commandFound) {
+            commandFound = true;
+            return <span key={index} style={{ color: '#89b4fa', fontWeight: 'bold' }}>{token}</span>;
+        }
+        if (token.startsWith('-')) return <span key={index} style={{ color: '#f2cdcd' }}>{token}</span>;
+        if (
+            (token.startsWith('"') && token.endsWith('"')) ||
+            (token.startsWith("'") && token.endsWith("'"))
+        ) {
+            return <span key={index} style={{ color: '#a6e3a1' }}>{token}</span>;
+        }
+        if (token.includes('/')) {
+            return <span key={index} style={{ color: '#cdd6f4', textDecoration: 'underline' }}>{token}</span>;
+        }
+        return <span key={index} style={{ color: '#cdd6f4' }}>{token}</span>;
+    });
+};
+
 function App() {
     //-----------STATES-----------
     const [isBootComplete, setIsBootComplete] = useState(false);
     const [pokemonId, setPokemonId] = useState<number | null>(null);
     const [history, setHistory] = useState<string[]>([]);
+    const [lastCommandSuccess, setLastCommandSuccess] = useState(true);
     const bottomRef = useRef<HTMLDivElement>(null);
 
     //-----------EFFECTS----------
-    // Generate random pokemon ID once on mount
+    // Generate random pokemon ID once on mount (generations 1, 3, 6 like user's local startup config)
     useEffect(() => {
-        const randomId = Math.floor(Math.random() * 386) + 1;
+        // Let's pool from Gen 1 (1-151), Gen 3 (252-386), Gen 6 (650-721)
+        const gens = [
+            Math.floor(Math.random() * 151) + 1,
+            Math.floor(Math.random() * 135) + 252,
+            Math.floor(Math.random() * 72) + 650
+        ];
+        const randomId = gens[Math.floor(Math.random() * gens.length)];
         setPokemonId(randomId);
     }, []);
 
@@ -25,10 +56,24 @@ function App() {
 
     //-----------HANDLERS---------
     const handleCommandSubmit = (command: string) => {
+        const trimmed = command.trim();
+        if (trimmed === 'clear') {
+            setHistory([]);
+            setLastCommandSuccess(true);
+            return;
+        }
+
+        const validCommands = ['help', 'about', 'projects', 'skills', 'contact', 'pokemon'];
+        const baseCmd = trimmed.split(' ')[0];
+        const isValid = validCommands.includes(baseCmd);
+
         setHistory((prev) => [...prev, command]);
+        setLastCommandSuccess(trimmed === '' ? true : isValid);
     };
 
     //----------RENDER------------
+    const arrowColor = '#B3BCFD';
+
     return (
         <div className='terminal-window'>
             <div className='terminal-body'>
@@ -42,22 +87,33 @@ function App() {
                     <>
                         <WelcomeHeader pokemonId={pokemonId} />
 
-                        {/* Render past command history */}
+                        {/* Render past command history with exact styling matching active prompt */}
                         {history.map((cmd, index) => (
                             <div key={index} className='prompt-container history-item'>
                                 <div className='prompt-line-1'>
-                                    <span>╭─ 󰊠 billa at ~</span>
-                                    <span>🕒 Executed</span>
+                                    <span style={{ color: arrowColor }}>
+                                        ╭╴<span style={{ fontWeight: 'bold', color: arrowColor }}> billa</span> at <span style={{ color: arrowColor }}>~</span>
+                                    </span>
+                                    <span style={{ color: arrowColor, fontWeight: 'bold' }}>
+                                        󱑈 Executed
+                                    </span>
                                 </div>
-                                <div className='prompt-line-2'>
-                                    <span>╰─&gt; {cmd}</span>
+                                <div className='prompt-line-2' style={{ color: arrowColor }}>
+                                    <span>╰─<span style={{ color: '#B3BCFD', fontWeight: 'bold' }}>󰍟</span></span>
+                                    <div className="input-highlight-overlay" style={{ position: 'static' }}>
+                                        {highlightCommand(cmd)}
+                                    </div>
                                 </div>
                             </div>
                         ))}
 
                         {/* Render active prompt */}
-                        <ActivePrompt onSubmit={handleCommandSubmit} />
-                        
+                        <ActivePrompt 
+                            onSubmit={handleCommandSubmit} 
+                            history={history}
+                            lastCommandSuccess={lastCommandSuccess}
+                        />
+
                         {/* Scroll Target */}
                         <div ref={bottomRef} />
                     </>
@@ -68,3 +124,4 @@ function App() {
 }
 
 export default App
+
