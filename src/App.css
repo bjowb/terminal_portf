@@ -26,7 +26,7 @@
 
 .terminal-body {
     flex: 1;
-    padding: 24px;
+    padding: 24px 24px 60px 24px; /* Leaves 60px of breathing room at the bottom */
     font-size: 24px;
     line-height: 1.5;
     overflow-y: auto;
@@ -55,7 +55,7 @@
 }
 
 .prompt-container {
-    margin-top: 20px;
+    margin-top: 32px; /* Increased from 20px to add a clean gap between prompts */
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -130,4 +130,15 @@
 /* Gives text a soft, natural retro glow */
 .terminal-body {
     text-shadow: 0 0 2px rgba(201, 203, 255, 0.35), 0 0 6px rgba(137, 180, 250, 0.15);
+}
+
+.terminal-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #89b4fa;
+    font-family: var(--font-mono);
+    font-size: 24px; /* Matches font-size of terminal-body */
+    flex: 1;
+    caret-color: #f38ba8; /* Hot pink/coral cursor */
 }
