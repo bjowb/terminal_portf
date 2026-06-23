@@ -21,7 +21,6 @@ export default function ActivePrompt({ onSubmit, history, lastCommandSuccess }: 
     const [inputVal, setInputVal] = useState('');
     const [currentTime, setCurrentTime] = useState(getFormattedTime());
     const [historyIndex, setHistoryIndex] = useState(-1);
-    const [suggestion, setSuggestion] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
     // 1. Clock timer effect
@@ -34,37 +33,34 @@ export default function ActivePrompt({ onSubmit, history, lastCommandSuccess }: 
 
     // 2. Global click listener to auto-focus the input anywhere on the screen
     useEffect(() => {
-        const handleGlobalClick = () => {
-            inputRef.current?.focus();
+        const handleGlobalClick = (e: MouseEvent) => {
+            if (window.getSelection()?.toString()) return;
+
+            const terminalWindow = document.querySelector('.terminal-window');
+            if (terminalWindow && terminalWindow.contains(e.target as Node)) {
+                inputRef.current?.focus();
+            }
         };
 
-        inputRef.current?.focus();
+        inputRef?.current?.focus();
         document.addEventListener('click', handleGlobalClick);
-
         return () => {
             document.removeEventListener('click', handleGlobalClick);
         };
+
     }, []);
 
-    // 3. Zsh Autosuggestions: match typed input to valid commands or history
-    useEffect(() => {
-        if (!inputVal) {
-            setSuggestion('');
-            return;
-        }
+    // 3. Zsh Autosuggestions: match typed input to valid commands or history (calculated during render)
+    const suggestion = (() => {
+        if (!inputVal) return '';
 
         // Search in valid commands first, then in history (most recent first)
         const match =
             VALID_COMMANDS.find((cmd) => cmd.startsWith(inputVal) && cmd !== inputVal) ||
             [...history].reverse().find((cmd) => cmd.startsWith(inputVal) && cmd !== inputVal);
 
-        if (match) {
-            // Suggestion is the remaining part of the matching word
-            setSuggestion(match.slice(inputVal.length));
-        } else {
-            setSuggestion('');
-        }
-    }, [inputVal, history]);
+        return match ? match.slice(inputVal.length) : '';
+    })();
 
     // 4. Handle special keys (Enter, Up, Down, Tab, ArrowRight)
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -73,7 +69,6 @@ export default function ActivePrompt({ onSubmit, history, lastCommandSuccess }: 
             onSubmit(trimmedCommand || '');
             setInputVal('');
             setHistoryIndex(-1);
-            setSuggestion('');
         } else if (e.key === 'ArrowUp') {
             e.preventDefault();
             if (history.length === 0) return;
@@ -98,7 +93,6 @@ export default function ActivePrompt({ onSubmit, history, lastCommandSuccess }: 
             if (suggestion) {
                 e.preventDefault();
                 setInputVal((prev) => prev + suggestion);
-                setSuggestion('');
             }
         }
     };
@@ -184,7 +178,7 @@ export default function ActivePrompt({ onSubmit, history, lastCommandSuccess }: 
             {/* Bottom line: ╰─󰍟 [input] */}
             <div className="prompt-line-2" style={{ color: arrowColor }}>
                 <span>╰─<span style={{ color: characterColor, fontWeight: 'bold' }}>󰍟</span></span>
-                
+
                 <div className="input-wrapper">
                     {/* The highlighter overlay layer (renders text with colors) */}
                     <div className="input-highlight-overlay">

@@ -31,23 +31,19 @@ const highlightCommand = (cmd: string) => {
 function App() {
     //-----------STATES-----------
     const [isBootComplete, setIsBootComplete] = useState(false);
-    const [pokemonId, setPokemonId] = useState<number | null>(null);
-    const [history, setHistory] = useState<string[]>([]);
-    const [lastCommandSuccess, setLastCommandSuccess] = useState(true);
-    const bottomRef = useRef<HTMLDivElement>(null);
-
-    //-----------EFFECTS----------
-    // Generate random pokemon ID once on mount (generations 1, 3, 6 like user's local startup config)
-    useEffect(() => {
+    const [pokemonId] = useState<number | null>(() => {
+        // Generate random pokemon ID once (generations 1, 3, 6 like user's local startup config)
         // Let's pool from Gen 1 (1-151), Gen 3 (252-386), Gen 6 (650-721)
         const gens = [
             Math.floor(Math.random() * 151) + 1,
             Math.floor(Math.random() * 135) + 252,
             Math.floor(Math.random() * 72) + 650
         ];
-        const randomId = gens[Math.floor(Math.random() * gens.length)];
-        setPokemonId(randomId);
-    }, []);
+        return gens[Math.floor(Math.random() * gens.length)];
+    });
+    const [history, setHistory] = useState<string[]>([]);
+    const [lastCommandSuccess, setLastCommandSuccess] = useState(true);
+    const bottomRef = useRef<HTMLDivElement>(null);
 
     // Scroll to bottom when history changes
     useEffect(() => {

@@ -26,13 +26,21 @@
 
 .terminal-body {
     flex: 1;
-    padding: 24px 24px 60px 24px; /* Leaves 60px of breathing room at the bottom */
+    padding: 24px 24px 60px 24px;
+    /* Leaves 60px of breathing room at the bottom */
     font-size: 24px;
     line-height: 1.5;
     overflow-y: auto;
 
     /* Ensure text colors look crisp */
     color: #cdd6f4;
+}
+
+@media (max-width: 768px) {
+    .terminal-body {
+        font-size: 14px;
+        /* Scaled down for readability on mobile */
+    }
 }
 
 .pokemon-sprite-container {
@@ -54,8 +62,16 @@
     image-rendering: pixelated;
 }
 
+@media (max-width: 768px) {
+    .pokemon-sprite {
+        width: 150px;
+        height: 150px;
+    }
+}
+
 .prompt-container {
-    margin-top: 32px; /* Increased from 20px to add a clean gap between prompts */
+    margin-top: 32px;
+    /* Increased from 20px to add a clean gap between prompts */
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -147,7 +163,7 @@
     bottom: 0;
     pointer-events: none;
     font-family: var(--font-mono);
-    font-size: 24px;
+    font-size: inherit;
     line-height: 1.5;
     padding: 0;
     margin: 0;
@@ -162,14 +178,16 @@
     background: transparent;
     border: none;
     outline: none;
-    color: transparent; /* Render text invisibly so the color overlay shows through */
+    color: transparent;
+    /* Render text invisibly so the color overlay shows through */
     font-family: var(--font-mono);
-    font-size: 24px;
+    font-size: inherit;
     line-height: 1.5;
     padding: 0;
     margin: 0;
     flex: 1;
-    caret-color: #f5e0dc; /* Catppuccin Mocha cursor color */
+    caret-color: #f5e0dc;
+    /* Catppuccin Mocha cursor color */
     z-index: 2;
 }
 
@@ -177,4 +195,3 @@
     color: #7f849c;
     opacity: 0.6;
 }
-
